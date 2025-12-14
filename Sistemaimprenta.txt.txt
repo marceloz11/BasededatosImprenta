@@ -7,3 +7,12 @@ CREATE TABLE Cliente (
     
 );
 
+Create table Empleado (
+  Cedula INT AUTO_INCREMENT PRIMARY KEY,
+  Correo VARCHAR(90),
+  Nombre_Completo VARCHAR(50),
+  celular INT,
+  rol ENUM('Diseñador_graafi', 'dis_preprensa', 'op_corte', 'op_impresion', 'op_acabados', 'op_caja', 'supervisor') NOT NULL,
+  Pass VARCHAR(20)
+);
+
