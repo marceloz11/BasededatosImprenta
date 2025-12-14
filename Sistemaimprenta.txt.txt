@@ -7,7 +7,6 @@ CREATE TABLE Cliente (
     
 );
 
-
 Create table Empleado (
   Cedula INT AUTO_INCREMENT PRIMARY KEY,
   Correo VARCHAR(90),
@@ -68,4 +67,18 @@ CREATE TABLE Orden_De_Trabajo (
     FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
     FOREIGN KEY (id_registro) REFERENCES Registro(id_registro),
     FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
+);
+
+CREATE TABLE Factura (
+    Id_factura INT AUTO_INCREMENT PRIMARY KEY,
+    Numero VARCHAR(20),
+    Fecha_emision DATE,
+    Estado VARCHAR(30),
+    Total DECIAML(10,2),
+    Id_pedido INT,
+    Cedula_Cliente INT,
+    Id_Cajero INT,
+    FOREIGN KEY (Id_pedido) REFERENCES Pedido(Id_Pedido),
+    FOREIGN KEY (Cedula_Cliente) REFERENCES Cliente(Cedula),
+    FOREIGN KEY (Id_cajero) REFERENCES Empleado(Id_empleado)
 );
