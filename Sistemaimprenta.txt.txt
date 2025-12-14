@@ -44,3 +44,17 @@ CREATE TABLE Modificacion (
     FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido)
 );
 
+-- Según tu instrucción, se crea con id_orden como INT AUTO_INCREMENT
+CREATE TABLE Orden_De_Trabajo (
+    id_orden INT AUTO_INCREMENT PRIMARY KEY,
+    id_pedido INT,
+    id_registro INT,
+    id_producto INT,
+    estado VARCHAR(20),
+    plazo DATE,
+    descrip_tarea VARCHAR(300),
+    tipo_orden ENUM('Interna', 'Externa'), -- Ejemplo de Enum para tipo_orden
+    FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido),
+    FOREIGN KEY (id_registro) REFERENCES Registro(id_registro),
+    FOREIGN KEY (id_producto) REFERENCES Producto(id_producto)
+);
