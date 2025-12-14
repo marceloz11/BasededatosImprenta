@@ -16,3 +16,13 @@ Create table Empleado (
   Pass VARCHAR(20)
 );
 
+CREATE TABLE Modificacion (
+    Modificacion_ID INT AUTO_INCREMENT PRIMARY KEY,
+    cedula int,
+    fecha DATE,
+    especificacion VARCHAR(200),
+    id_pedido INT,
+    FOREIGN KEY (cedula) REFERENCES Cliente(cedula),
+    FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido)
+);
+
