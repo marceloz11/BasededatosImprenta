@@ -7,6 +7,7 @@ CREATE TABLE Cliente (
     
 );
 
+
 Create table Empleado (
   Cedula INT AUTO_INCREMENT PRIMARY KEY,
   Correo VARCHAR(90),
@@ -15,6 +16,13 @@ Create table Empleado (
   rol ENUM('Diseñador_graafi', 'dis_preprensa', 'op_corte', 'op_impresion', 'op_acabados', 'op_caja', 'supervisor') NOT NULL,
   Pass VARCHAR(20)
 );
+CREATE TABLE Pedido (
+    id_pedido INT AUTO_INCREMENT PRIMARY KEY,
+    fecha_emision DATE,
+    fecha_entrega DATE,
+    precio_pedido VARCHAR(20) -- El diagrama indicaba Char(20), se pasa a Varchar
+);
+
 
 CREATE TABLE Modificacion (
     Modificacion_ID INT AUTO_INCREMENT PRIMARY KEY,
