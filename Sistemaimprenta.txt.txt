@@ -1,0 +1,9 @@
+CREATE TABLE Cliente (
+    cedula INT AUTO_INCREMENT PRIMARY KEY,
+    correo VARCHAR(90),
+    nombre VARCHAR(50),
+    direccion VARCHAR(120),
+    telefono int
+    
+);
+
