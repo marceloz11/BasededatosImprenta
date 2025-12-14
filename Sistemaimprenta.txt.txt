@@ -44,7 +44,18 @@ CREATE TABLE Modificacion (
     FOREIGN KEY (id_pedido) REFERENCES Pedido(id_pedido)
 );
 
--- Según tu instrucción, se crea con id_orden como INT AUTO_INCREMENT
+CREATE TABLE Producto (
+    Id_producto INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre_Prod VARHAR(50),
+    Precio DECIAML(8,2),
+    Tipo VARCHAR(20),
+    Id_pedido INT,
+    Id_supervisor INT,
+    FOREIGN KEY (Id_pedido) REFERENCES (Id_pedido),
+    FOREIGN KEY (Id_supervisor) REFERENCES (Id_empleado)
+);
+
+-- Según su instrucción, se crea con id_orden como INT AUTO_INCREMENT
 CREATE TABLE Orden_De_Trabajo (
     id_orden INT AUTO_INCREMENT PRIMARY KEY,
     id_pedido INT,
