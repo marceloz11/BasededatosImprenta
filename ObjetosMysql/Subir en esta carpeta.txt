@@ -1,0 +1,75 @@
+-- las 4 vista reportes 
+
+-- Reporte 1 Pedidos Pendientes
+
+CREATE VIEW vista_pedidos_pendientes AS
+SELECT 
+    p.id_pedido,
+    c.nombre AS cliente,
+    p.fecha_emision,
+    p.fecha_entrega,
+    o.estado AS estado_orden
+FROM pedido p
+JOIN orden_de_trabajo o ON p.id_pedido = o.id_pedido
+JOIN cliente c ON c.cedula = (
+    SELECT f.cedula_cliente 
+    FROM factura f 
+    WHERE f.id_pedido = p.id_pedido
+    LIMIT 1
+)
+WHERE o.estado <> 'Completada'
+  AND o.estado <> 'Cancelada';
+
+
+-- Reporte 2 Eficiencia por Área
+
+CREATE VIEW vista_eficiencia_empleado AS
+SELECT 
+    e.id_empleado,
+    e.nombre_completo AS empleado,
+    e.rol,
+    COUNT(o.id_orden) AS total_ordenes_completadas
+FROM orden_de_trabajo o
+JOIN producto pr ON o.id_producto = pr.id_producto
+JOIN empleado e ON pr.id_supervisor = e.id_empleado
+WHERE o.estado = 'Completada'
+GROUP BY e.id_empleado, e.nombre_completo, e.rol;
+
+
+-- Reporte 3 Inventario de Productos en Proceso
+
+CREATE VIEW vista_productos_en_proceso AS
+SELECT 
+    p.id_pedido,
+    c.nombre AS cliente,
+    pr.nombre_prod AS producto,
+    pr.precio,
+    o.estado AS estado_orden,
+    a.tipo_de_acabado
+FROM pedido p
+JOIN producto pr ON p.id_pedido = pr.id_pedido
+JOIN orden_de_trabajo o ON pr.id_producto = o.id_producto
+LEFT JOIN acabado a ON o.id_orden = a.id_orden
+JOIN factura f ON p.id_pedido = f.id_pedido
+JOIN cliente c ON f.cedula_cliente = c.cedula
+WHERE o.estado IN ('Creada','Asignada','En proceso','Pausada');
+
+
+-- Reporte 4 Facturación y Pagos por Cliente
+
+CREATE VIEW vista_facturacion_cliente AS
+SELECT 
+    c.cedula,
+    c.nombre AS cliente,
+    SUM(f.total) AS monto_facturado
+FROM factura f
+JOIN cliente c ON f.cedula_cliente = c.cedula
+WHERE f.estado IN ('Emitida','Pagada')
+GROUP BY c.cedula, c.nombre;
+
+-- Pruebas 
+
+SELECT * FROM vista_pedidos_pendientes;
+SELECT * FROM vista_eficiencia_empleado;
+SELECT * FROM vista_productos_en_proceso;
+SELECT * FROM vista_facturacion_cliente;
