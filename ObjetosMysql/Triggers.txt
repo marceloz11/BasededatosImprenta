@@ -1,0 +1,69 @@
+-- Trigger BEFORE INSERT en pedido
+
+DELIMITER $$
+
+CREATE TRIGGER trg_validar_fechas_pedido
+BEFORE INSERT ON pedido
+FOR EACH ROW
+BEGIN
+    IF NEW.fecha_entrega < NEW.fecha_emision THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: La fecha de entrega no puede ser menor que la fecha de emisión.';
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- Trigger BEFORE UPDATE en pedido
+
+DELIMITER $$
+
+CREATE TRIGGER trg_validar_fechas_pedido_update
+BEFORE UPDATE ON pedido
+FOR EACH ROW
+BEGIN
+    IF NEW.fecha_entrega < NEW.fecha_emision THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Error: La fecha de entrega no puede ser menor que la fecha de emisión.';
+    END IF;
+END$$
+
+-- creamos una tabla para la auditoria de pedidos
+
+DELIMITER ;
+
+CREATE TABLE auditoria_pedido (
+    id_auditoria INT AUTO_INCREMENT PRIMARY KEY,
+    id_pedido INT,
+    fecha_anterior DATE,
+    fecha_nueva DATE,
+    precio_anterior VARCHAR(20),
+    precio_nuevo VARCHAR(20),
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Trigger AFTER UPDATE en pedido
+
+DELIMITER $$
+
+CREATE TRIGGER trg_auditoria_pedido
+AFTER UPDATE ON pedido
+FOR EACH ROW
+BEGIN
+    INSERT INTO auditoria_pedido(
+        id_pedido,
+        fecha_anterior,
+        fecha_nueva,
+        precio_anterior,
+        precio_nuevo
+    )
+    VALUES(
+        OLD.id_pedido,
+        OLD.fecha_entrega,
+        NEW.fecha_entrega,
+        OLD.precio_pedido,
+        NEW.precio_pedido
+    );
+END$$
+
+DELIMITER ;
