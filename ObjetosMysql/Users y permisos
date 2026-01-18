@@ -1,0 +1,28 @@
+use sitemaimprenta;
+
+CREATE USER 'supervisor'@'localhost' IDENTIFIED BY 'superv123';
+CREATE USER 'op_caja'@'localhost' IDENTIFIED BY 'caja107';
+CREATE USER 'op_impresion'@'localhost' IDENTIFIED BY 'impre187';
+CREATE USER 'op_acabados'@'localhost' IDENTIFIED BY 'acab166';
+CREATE USER 'disenador_graf'@'localhost' IDENTIFIED BY 'dis134';
+
+
+#supervisor
+GRANT ALL PRIVILEGES ON sistemaimprenta.* TO 'supervisor'@'localhost';
+# caja
+GRANT SELECT ON sistemaimprenta.vista_facturacion_cliente TO 'op_caja'@'localhost';
+GRANT SELECT ON sistemaimprenta.vista_pedidos_pendientes TO 'op_caja'@'localhost';
+GRANT EXECUTE ON PROCEDURE sistemaimprenta.sp_insercionDatos TO 'op_caja'@'localhost';
+#impresiones
+GRANT SELECT ON sistemaimprenta.vista_productos_en_proceso TO 'op_impresion'@'localhost';
+GRANT SELECT ON sistemaimprenta.vista_eficiencia_empleado TO 'op_impresion'@'localhost';
+GRANT EXECUTE ON PROCEDURE sistemaimprenta.sp_insercionDatos TO 'op_impresion'@'localhost';
+#acabados
+GRANT SELECT ON sistemaimprenta.vista_productos_en_proceso TO 'op_acabados'@'localhost';
+GRANT SELECT ON sistemaimprenta.vista_pedidos_pendientes TO 'op_acabados'@'localhost';
+GRANT EXECUTE ON PROCEDURE sistemaimprenta.sp_insercionDatos TO 'op_acabados'@'localhost';
+#Diseñador_graf
+GRANT SELECT ON sistemaimprenta.vista_productos_en_proceso TO 'disenador_graf'@'localhost';
+GRANT SELECT ON sistemaimprenta.vista_pedidos_pendientes TO 'disenador_graf'@'localhost';
+GRANT EXECUTE ON PROCEDURE sistemaimprenta.sp_insercionDatos TO 'disenador_graf'@'localhost';
+#EN CASO DE SER EL NOMBRE DIFERENTE DEL STORE PROCEDURE HAY QUE CAMBIAR TODOS LOS "sp_insercionDatos"
